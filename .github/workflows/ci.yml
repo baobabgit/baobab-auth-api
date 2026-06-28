@@ -33,7 +33,7 @@ jobs:
       security-events: write
     steps:
       - uses: actions/checkout@v7
-      - uses: astral-sh/setup-uv@v8.0.0
+      - uses: astral-sh/setup-uv@v8.2.0
       - run: uv python install 3.13
       - run: uv sync --frozen
       - name: Black (format check)
@@ -62,7 +62,7 @@ jobs:
     if: vars.CI_ENABLED != 'false'
     steps:
       - uses: actions/checkout@v7
-      - uses: astral-sh/setup-uv@v8.0.0
+      - uses: astral-sh/setup-uv@v8.2.0
       - run: uv python install 3.13
       - run: uv sync --frozen
       - name: pytest
@@ -97,7 +97,7 @@ jobs:
     if: vars.CI_ENABLED != 'false'
     steps:
       - uses: actions/checkout@v7
-      - uses: astral-sh/setup-uv@v8.0.0
+      - uses: astral-sh/setup-uv@v8.2.0
       - run: uv python install 3.13
       - run: uv sync --frozen
       - name: Vérifier la traçabilité
@@ -110,7 +110,7 @@ jobs:
     if: vars.CI_ENABLED != 'false'
     steps:
       - uses: actions/checkout@v7
-      - uses: astral-sh/setup-uv@v8.0.0
+      - uses: astral-sh/setup-uv@v8.2.0
       - run: uv python install 3.13
       - run: uv sync --frozen
       - name: Build (sdist + wheel)
