@@ -67,7 +67,7 @@ jobs:
       - name: Twine check
         run: uv run twine check dist/*
       - name: Attestation de provenance (supply chain)
-        uses: actions/attest-build-provenance@v2
+        uses: actions/attest-build-provenance@v4
         with:
           subject-path: "dist/*"
       - uses: actions/upload-artifact@v6
