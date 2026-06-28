@@ -1,0 +1,40 @@
+---
+description: Tests pytest, couverture ≥ 95 %, arborescence miroir
+globs:
+  - "tests/**/*.py"
+alwaysApply: false
+---
+
+# Tests & couverture
+
+Source unique : [`AGENTS.md`](../../AGENTS.md) — section « Tests ».
+
+## Arborescence miroir
+
+```
+src/<pkg>/a/b/c.py  →  tests/unit/<pkg>/a/b/test_c.py
+```
+
+Autres dossiers :
+- `tests/integration/` — tests inter-librairies.
+- `tests/contracts/`   — tests de contrat des API publiques.
+- `tests/fixtures/`    — fixtures partagées.
+
+## Conventions
+
+- **1 classe testée = 1 classe de test** : `class MonService` → `class TestMonService`.
+- **Classe abstraite** : tester via une classe concrète définie dans le fichier de test.
+- Structure **AAA** : Arrange / Act / Assert.
+- Noms porteurs de l'ID spec : `def test_FEAT_001_1_cas_nominal(...)`.
+- **Couverture ≥ 95 %** — imposée par `--cov-fail-under=95`.
+- Aucun `# pragma: no cover` sans justification documentée.
+- Aucun `@pytest.mark.skip` sans justification documentée.
+- Zéro warning pytest accepté.
+
+## Lancer les tests
+
+```bash
+uv run pytest --cov=src --cov-report=term-missing --cov-fail-under=95
+# ou :
+make test
+```

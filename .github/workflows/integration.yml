@@ -1,0 +1,74 @@
+name: Integration
+
+# Déclenché automatiquement sur toute PR vers version/**, et manuellement.
+# Le workflow ne s'exécute que si integration_required: true est déclaré
+# dans version.yaml ou dans le backlog courant.
+on:
+  pull_request:
+    branches: ["version/**"]
+  workflow_dispatch:
+    inputs:
+      force_run:
+        description: "Forcer l'exécution même si integration_required n'est pas déclaré"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  check-required:
+    name: Vérifier si l'intégration est requise
+    runs-on: ubuntu-latest
+    outputs:
+      required: ${{ steps.check.outputs.required }}
+    steps:
+      - uses: actions/checkout@v7
+      - name: Lire integration_required
+        id: check
+        run: |
+          REQUIRED=false
+          # Cherche integration_required: true dans les fichiers de version et backlogs
+          if grep -r "integration_required: true" \
+               docs/ai_workflow/versions/ \
+               docs/backlog/backlogs/ 2>/dev/null; then
+            REQUIRED=true
+          fi
+          if [ "${{ github.event.inputs.force_run }}" = "true" ]; then
+            REQUIRED=true
+          fi
+          echo "required=$REQUIRED" >> "$GITHUB_OUTPUT"
+
+  integration:
+    name: Tests d'intégration inter-librairies
+    runs-on: ubuntu-latest
+    needs: check-required
+    if: needs.check-required.outputs.required == 'true'
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v8.0.0
+      - run: uv python install 3.13
+      - run: uv sync --frozen
+      - name: Tests de contrat
+        run: uv run pytest tests/contracts/ -v
+      - name: Tests d'imports publics
+        run: uv run pytest tests/integration/ -v -k "import"
+      - name: Tests d'intégration complets
+        run: uv run pytest tests/integration/ -v
+      - name: Vérifier compatibility_matrix.yaml
+        run: |
+          if [ -f docs/integrations/compatibility_matrix.yaml ]; then
+            echo "compatibility_matrix.yaml présent — vérification du format"
+            python -c "import yaml; yaml.safe_load(open('docs/integrations/compatibility_matrix.yaml'))"
+          else
+            echo "Aucune matrice de compatibilité déclarée — OK"
+          fi
+
+  skip-integration:
+    name: Intégration non requise (skip)
+    runs-on: ubuntu-latest
+    needs: check-required
+    if: needs.check-required.outputs.required != 'true'
+    steps:
+      - name: Aucune intégration inter-librairies requise pour cette version
+        run: echo "integration_required non déclaré — workflow terminé en succès neutre."

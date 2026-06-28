@@ -1,0 +1,52 @@
+# Environnement virtuel (jamais versionné)
+.venv/
+venv/
+env/
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+build/
+dist/
+*.egg
+
+# Tests & couverture
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+junit*.xml
+.tox/
+.nox/
+
+# Rapports d'analyse (générés en CI)
+bandit.sarif
+sbom.json
+
+# Typage / lint caches
+.mypy_cache/
+.ruff_cache/
+.dmypy.json
+
+# Documentation construite
+docs/_build/
+docs/api/_autosummary/
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Claude Code (local uniquement)
+CLAUDE.local.md
+.claude/settings.local.json

@@ -1,0 +1,61 @@
+---
+description: Workflow IA — verrou, démarrage de session, handoff, recovery
+globs:
+  - "docs/ai_workflow/**"
+  - "docs/backlog/**"
+alwaysApply: true
+---
+
+# Workflow global
+
+Source unique : [`AGENTS.md`](../../AGENTS.md) — sections « Démarrage de session » et « Gestion du verrou ».
+
+## Principe fondamental
+
+Un seul outil actif à la fois. Avant toute modification de fichier, dans cet ordre :
+
+1. `docs/ai_workflow/state/lock.yaml`
+   - `locked: false` → OK, continuer
+   - `locked: true` + `expires_at` futur → **STOP**, un autre outil est actif
+   - `locked: true` + `expires_at` dépassé → verrou orphelin → recovery
+
+2. `docs/ai_workflow/state/queue.yaml` → backlog `IN_PROGRESS` ou prochain `READY`
+
+3. `docs/ai_workflow/runs/BL-XXX/status.yaml` → étape et rôle actuels
+
+4. `docs/ai_workflow/runs/BL-XXX/07_handoff.md` → contexte de la session précédente
+
+5. Annoncer l'état, puis poser le verrou (`locked: true`, `expires_at: +2h`).
+
+Prompt complet : `docs/ai_workflow/roles/orchestrateur.md`
+
+## Rôles disponibles
+
+Orchestrateur · Analyste fonctionnel · Architecte Python · Découpeur backlog ·
+Développeur Python · Ingénieur QA · Reviewer technique · Release manager.
+
+Un outil endosse **un seul rôle** par session.
+
+## Verrou
+
+- Mettre à jour `last_heartbeat_at` et `expires_at` régulièrement pendant la session.
+- Libérer le verrou (`locked: false`) **et** écrire `07_handoff.md` avant de quitter.
+- Ne jamais modifier le projet si le verrou est `locked: true` avec `expires_at` futur.
+
+## Structure d'un run (`docs/ai_workflow/runs/BL-XXX/`)
+
+```
+00_assignment.md  01_context.md  02_role_prompt.md  03_expected_outputs.md
+04_worklog.md     05_tests_report.md  06_review.md  07_handoff.md
+08_recovery.md    status.yaml
+```
+
+Mettre à jour `status.yaml` à chaque transition d'état.
+
+## Recovery (verrou orphelin)
+
+1. Lire `status.yaml` + `git status` + `git diff`.
+2. Exécuter `make all` — identifier ce qui bloque.
+3. Produire `08_recovery.md` avec le diagnostic.
+4. Reprendre ou signaler à l'utilisateur.
+5. Poser un nouveau verrou propre.

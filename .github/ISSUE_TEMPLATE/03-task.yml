@@ -1,0 +1,34 @@
+name: "🔧 Task (backlog)"
+description: "Tâche concrète rattachée à une Feature"
+title: "[TASK-XXX.Y.Z] "
+labels: ["type:task"]
+body:
+  - type: input
+    id: id
+    attributes:
+      label: Identifiant
+      placeholder: "TASK-001.1.1"
+    validations:
+      required: true
+  - type: input
+    id: parent
+    attributes:
+      label: Feature parente
+      placeholder: "FEAT-001.1 (#numéro de l'issue)"
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description / étapes
+    validations:
+      required: true
+  - type: checkboxes
+    id: dod
+    attributes:
+      label: Definition of Done
+      options:
+        - label: "Code POO, 1 classe/fichier, type hints complets"
+        - label: "ruff + mypy strict passent"
+        - label: "Test miroir présent, couverture ≥ 90 %"
+        - label: "Docstrings RST / guide à jour si besoin"

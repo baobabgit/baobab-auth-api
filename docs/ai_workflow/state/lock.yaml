@@ -1,0 +1,20 @@
+# Verrou de travail global — mode stable séquentiel
+# Un seul outil peut travailler à un instant donné.
+#
+# Règles :
+#   locked: false → un outil peut démarrer.
+#   locked: true + expires_at dans le futur → aucun autre outil ne modifie le projet.
+#   locked: true + expires_at dépassé → verrou orphelin → procédure de recovery.
+#
+# Tout outil actif doit mettre à jour last_heartbeat_at et expires_at régulièrement.
+
+locked: false
+active_run: null
+active_role: null
+active_tool: null
+branch: null
+locked_at: null
+last_heartbeat_at: null
+expires_at: null
+lease_duration_minutes: 15
+status: IDLE

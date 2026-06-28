@@ -1,0 +1,120 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "example-package"
+version = "0.1.0"
+description = "Template de projet Python piloté par plusieurs IA de développement."
+readme = "README.md"
+requires-python = ">=3.13"
+license = "MIT"
+authors = [{ name = "Patrick ANDRIANAIVO" }]
+keywords = ["template", "python", "ai", "agents"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.13",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Typing :: Typed",
+]
+dependencies = [
+    "pydantic-settings>=2.14.2",
+]
+
+[project.urls]
+Homepage = "https://github.com/your-org/your-repo"
+Repository = "https://github.com/your-org/your-repo"
+Documentation = "https://your-repo.readthedocs.io"
+Issues = "https://github.com/your-org/your-repo/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/example_package"]
+
+[dependency-groups]
+dev = [
+    "black>=24.0",
+    "ruff>=0.9",
+    "mypy>=1.13",
+    "pytest>=9.1.1",
+    "bandit[toml]>=1.9.4",
+    "pytest-cov>=5.0",
+    "nox>=2024.0",
+    "build>=1.0",
+    "twine>=6.0",
+    "pre-commit>=4.0",
+    "pydantic-settings>=2.14.2",
+    "pyyaml>=6.0",
+]
+docs = [
+    "sphinx>=9.1.0",    
+    "furo>=2025.12.19",
+]
+
+# --- Black : formatage -------------------------------------------------------
+[tool.black]
+line-length = 88
+target-version = ["py313"]
+
+# --- Ruff : lint uniquement (black gère le format) ---------------------------
+[tool.ruff]
+line-length = 88
+target-version = "py313"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E", "W",   # pycodestyle (PEP 8)
+    "F",        # pyflakes
+    "I",        # isort
+    "N",        # pep8-naming
+    "UP",       # pyupgrade
+    "B",        # bugbear
+    "D",        # pydocstyle (docstrings)
+    "ANN",      # type annotations
+    "RUF",      # ruff
+]
+ignore = [
+    "D203", "D213",      # incompatibilités de style de docstring
+    "D401",              # "imperative mood" : heuristique anglaise, inadaptée au français
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "pep257"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = ["D", "ANN", "N802"]
+"scripts/**/*.py" = ["ANN401"]
+
+# --- Mypy : typage strict ----------------------------------------------------
+[tool.mypy]
+python_version = "3.13"
+strict = true
+files = ["src", "tests"]
+warn_unused_configs = true
+show_error_codes = true
+
+# --- Pytest + couverture (≥ 95 % imposée) ------------------------------------
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--cov=src --cov-report=term-missing --cov-report=xml --cov-fail-under=95"
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+
+[tool.coverage.run]
+branch = true
+source = ["src"]
+
+[tool.coverage.report]
+fail_under = 95
+show_missing = true
+exclude_lines = [
+    "pragma: no cover",
+    "raise NotImplementedError",
+    "if TYPE_CHECKING:",
+    "@(abc\\.)?abstractmethod",
+]
+
+# --- Bandit : analyse de sécurité statique (SAST) ----------------------------
+[tool.bandit]
+exclude_dirs = ["tests", ".venv"]

@@ -1,0 +1,32 @@
+name: "🧩 Feature"
+description: "Découper une US en fonctionnalité (FEAT)"
+title: "[FEAT-XXX.Y] "
+labels: ["type:feat"]
+body:
+  - type: input
+    id: id
+    attributes:
+      label: Identifiant
+      placeholder: "FEAT-001.1"
+    validations:
+      required: true
+  - type: input
+    id: parent
+    attributes:
+      label: US parente
+      placeholder: "US-001 (#numéro de l'issue)"
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Critères d'acceptation
+      placeholder: "- [ ] …"
+    validations:
+      required: true

@@ -1,0 +1,48 @@
+---
+description: Règles Python orienté objet, typage, docstrings
+globs:
+  - "src/**/*.py"
+alwaysApply: false
+---
+
+# Python orienté objet
+
+Source unique : [`AGENTS.md`](../../AGENTS.md) — sections « Langage & conception »,
+« Typage & style ».
+
+## Règles absolues
+
+- **1 classe = 1 fichier.** `class MonService` → `mon_service.py`.
+  Dérogation : hiérarchie d'exceptions → `exceptions/<catégorie>.py`.
+- Python ≥ 3.13. SOLID. Composition > héritage.
+- **Type hints obligatoires** sur toutes les signatures (paramètres et retours).
+- Format : `black` (line-length 88). Lint : `ruff`. Types : `mypy --strict`.
+- Pas de logique exécutable au niveau module.
+
+## Docstrings (reStructuredText)
+
+```python
+class MonService:
+    """Description courte.
+
+    :param dep: Dépendance injectée.
+    :type dep: MonRepository
+    :spec: FEAT-001.1
+    """
+
+    def faire(self, valeur: str) -> str:
+        """Fait quelque chose.
+
+        :param valeur: La valeur d'entrée.
+        :returns: Le résultat.
+        :raises ValueError: Si valeur est vide.
+        """
+```
+
+- Tout élément **public** doit avoir une docstring RST avec `:spec: <ID>`.
+- `:spec:` lie le code à l'exigence fonctionnelle (traçabilité).
+
+## Contrat d'API
+
+Ce qui est dans `__all__` est un contrat SemVer.
+Rupture → MAJOR bump + entrée BREAKING dans `CHANGELOG.md`.

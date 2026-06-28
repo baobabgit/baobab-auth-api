@@ -1,0 +1,20 @@
+# File de backlogs — gérée par l'Orchestrateur
+# L'orchestrateur sélectionne le prochain backlog selon :
+#   1. version active
+#   2. dépendances satisfaites
+#   3. priorité la plus élevée (P0 > P1 > P2 > P3 > P4)
+#   4. impact bloquant
+#   5. risque à réduire
+#   6. effort raisonnable
+#   7. absence de blocage d'intégration
+
+version_active: null
+
+queue: []
+# Exemple d'entrée :
+# - id: BL-001
+#   title: "Initialiser la structure du package"
+#   version_target: v0.1.0
+#   priority: P0
+#   status: TODO
+#   depends_on: []

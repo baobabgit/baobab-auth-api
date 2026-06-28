@@ -1,0 +1,32 @@
+name: "📘 User Story"
+description: "Décrire un besoin utilisateur (US)"
+title: "[US-XXX] "
+labels: ["type:us"]
+body:
+  - type: input
+    id: id
+    attributes:
+      label: Identifiant
+      placeholder: "US-001"
+    validations:
+      required: true
+  - type: textarea
+    id: story
+    attributes:
+      label: Récit
+      description: "En tant que… je veux… afin de…"
+      placeholder: "En tant qu'utilisateur, je veux …, afin de …"
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Critères d'acceptation
+      placeholder: "- [ ] …"
+    validations:
+      required: true
+  - type: input
+    id: spec
+    attributes:
+      label: Spécification (RST)
+      placeholder: "docs/specifications/us/US-001-.../index.rst"

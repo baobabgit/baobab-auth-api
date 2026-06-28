@@ -1,0 +1,54 @@
+---
+description: Documentation Sphinx, docstrings reStructuredText, Diátaxis
+globs:
+  - "docs/**/*.rst"
+  - "src/**/*.py"
+alwaysApply: false
+---
+
+# Documentation reStructuredText
+
+Source unique : [`AGENTS.md`](../../AGENTS.md) — section « Documentation ».
+
+## Docstrings publiques (RST obligatoire)
+
+Format reStructuredText sur tout élément public (classe, méthode, propriété) :
+
+```python
+def calculer(self, valeur: float) -> float:
+    """Calcule le résultat.
+
+    :param valeur: La valeur d'entrée (doit être positive).
+    :type valeur: float
+    :returns: Le résultat du calcul.
+    :rtype: float
+    :raises ValueError: Si ``valeur`` est négative.
+    :spec: FEAT-002.3
+    """
+```
+
+Champs obligatoires : `:param:`, `:returns:`, `:raises:` (si applicable), `:spec:`.
+
+## Structure docs/
+
+```
+docs/
+├── specifications/   # US / FEAT en RST (source stable)
+├── ai_workflow/      # workflow IA, state, runs (Markdown opérationnel)
+├── api/              # autodoc Sphinx (généré)
+├── guides/
+│   ├── tutorials/    # apprendre (Diátaxis)
+│   └── how-to/       # résoudre un problème précis (Diátaxis)
+├── contracts/        # contrats publics de la librairie
+└── integrations/     # matrices de compatibilité, rapports
+```
+
+## Générer la doc
+
+```bash
+make docs
+# ou :
+sphinx-build -b html docs docs/_build/html
+```
+
+La doc **ne doit pas** mentionner un outil comme auteur ou générateur.

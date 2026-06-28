@@ -1,0 +1,44 @@
+# Matrice de compatibilité inter-librairies
+# Mise à jour par le Release Manager lors de chaque validation d'intégration.
+#
+# Mécanisme d'intégration retenu : git-ref directe (pas de TestPyPI RC).
+# Le consommateur installe la branche version/ via :
+#   uv add "baobab-lib @ git+https://github.com/OWNER/baobab-lib.git@version/vX.Y.Z"
+# puis exécute sa suite de tests. Résultat consigné ici + rapport dans reports/.
+#
+# Côté librairie PRODUCTRICE (ce package expose des services à d'autres) :
+#
+# library: example-package
+# version: v0.1.0
+# validated_consumers: []
+#
+# Côté librairie CONSOMMATRICE (ce package dépend d'autres librairies) :
+#
+# library: example-package
+# version: v0.1.0
+# validated_dependencies: []
+
+library: example-package
+version: v0.1.0
+
+validated_consumers: []
+# Exemple :
+# - name: baobab-example-consumer
+#   version: v0.3.0
+#   status: PASSED                    # PENDING | PASSED | FAILED
+#   integration_method: git_ref
+#   ref: version/v0.1.0              # branche testée chez le consommateur
+#   report: docs/integrations/reports/example-package-v0.1.0__example-consumer-v0.3.0.md
+
+validated_dependencies: []
+# Exemple :
+# - name: baobab-example-core
+#   version: v0.5.0
+#   status: PASSED                    # PENDING | PASSED | FAILED
+#   integration_method: git_ref
+#   ref: version/v0.5.0              # branche testée ici (via git-ref dans pyproject.toml)
+#   validation_type:
+#     - import_tests
+#     - contract_tests
+#     - integration_tests
+#   report: docs/integrations/reports/example-core-v0.5.0__example-package-v0.1.0.md

@@ -1,0 +1,92 @@
+# Règles Codex — baobab-python-template
+# Ce fichier encadre les commandes autorisées, à confirmer ou interdites.
+
+prefix_rule(
+    pattern = ["uv", "run", "pytest"],
+    decision = "allow",
+    justification = "Les tests doivent pouvoir être exécutés."
+)
+
+prefix_rule(
+    pattern = ["uv", "run", "black"],
+    decision = "allow",
+    justification = "Le formatage est autorisé."
+)
+
+prefix_rule(
+    pattern = ["uv", "run", "ruff"],
+    decision = "allow",
+    justification = "Le lint est autorisé."
+)
+
+prefix_rule(
+    pattern = ["uv", "run", "mypy"],
+    decision = "allow",
+    justification = "Le typage doit être contrôlé."
+)
+
+prefix_rule(
+    pattern = ["uv", "run", "bandit"],
+    decision = "allow",
+    justification = "L'analyse sécurité est obligatoire."
+)
+
+prefix_rule(
+    pattern = ["uv", "build"],
+    decision = "allow",
+    justification = "La construction du package est autorisée."
+)
+
+prefix_rule(
+    pattern = ["uv", "run", "twine", "check"],
+    decision = "allow",
+    justification = "La vérification de la distribution est autorisée."
+)
+
+prefix_rule(
+    pattern = ["uv", "sync"],
+    decision = "allow",
+    justification = "La synchronisation de l'environnement est autorisée."
+)
+
+prefix_rule(
+    pattern = ["uv", "add"],
+    decision = "confirm",
+    justification = "L'ajout d'une dépendance nécessite une confirmation explicite."
+)
+
+prefix_rule(
+    pattern = ["uv", "remove"],
+    decision = "confirm",
+    justification = "La suppression d'une dépendance nécessite une confirmation explicite."
+)
+
+prefix_rule(
+    pattern = ["git", "push"],
+    decision = "confirm",
+    justification = "Un push vers le dépôt distant doit être confirmé."
+)
+
+prefix_rule(
+    pattern = ["git", "tag"],
+    decision = "confirm",
+    justification = "La création d'un tag de release doit être confirmée."
+)
+
+prefix_rule(
+    pattern = ["rm", "-rf"],
+    decision = "forbidden",
+    justification = "Suppression récursive interdite sans validation explicite."
+)
+
+prefix_rule(
+    pattern = ["git", "push", "--force"],
+    decision = "forbidden",
+    justification = "Force push interdit sur ce dépôt."
+)
+
+prefix_rule(
+    pattern = ["git", "commit", "--amend"],
+    decision = "confirm",
+    justification = "L'amendement d'un commit nécessite une confirmation (risque de perte)."
+)

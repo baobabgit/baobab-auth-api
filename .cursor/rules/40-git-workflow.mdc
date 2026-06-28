@@ -1,0 +1,59 @@
+---
+description: Modèle Git 3 niveaux, messages de commit, PR, SemVer
+globs:
+  - ".github/**"
+alwaysApply: false
+---
+
+# Workflow Git
+
+Source unique : [`AGENTS.md`](../../AGENTS.md) — section « Git & traçabilité ».
+
+## Modèle de branches (3 niveaux)
+
+```
+main
+└── version/v0.1.0
+    └── bl/012-implement-user-repository
+```
+
+- `main` — stable uniquement, porte les tags de release.
+- `version/vX.Y.Z` — tout le travail d'une version.
+- `bl/XXX-description` — implémentation atomique d'un backlog.
+- **Une seule branche `bl/` active** (non mergée) à la fois.
+- Merges toujours ascendants : `bl/` → `version/` → `main`.
+- **Aucun commit direct sur `main`.**
+
+## Format de commit obligatoire
+
+```
+BL-XXX: action courte et explicite
+```
+
+Exemples :
+```
+BL-012: implement user repository
+BL-013: add user repository unit tests
+```
+
+**Jamais** : mention d'un outil, `Co-authored-by:`, génération automatique.
+Le hook `no-ai-attribution` bloque les commit non conformes.
+
+## Actions par backlog
+
+```
+git checkout version/vX.Y.Z
+git checkout -b bl/XXX-description
+# ... implémenter, tester ...
+make all
+git commit -m "BL-XXX: ..."
+# ouvrir PR vers version/vX.Y.Z, attendre CI verte
+```
+
+## Release
+
+Tag créé sur `main` uniquement si la version est `RELEASE_READY` :
+```bash
+git tag vX.Y.Z
+git push origin vX.Y.Z
+```

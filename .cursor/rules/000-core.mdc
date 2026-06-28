@@ -1,0 +1,41 @@
+---
+description: Point d'entrée des règles — référence vers AGENTS.md et les règles spécialisées
+globs:
+alwaysApply: true
+---
+
+# Règles de développement
+
+La **source unique de vérité** est [`AGENTS.md`](../../AGENTS.md) à la racine.
+**Lis-le intégralement avant toute action.** Ne duplique pas son contenu ici.
+
+Règles spécialisées Cursor (pour le contexte automatique) :
+
+| Fichier | Domaine |
+|---------|---------|
+| `00-global-workflow.mdc` | Workflow IA, verrou, handoff, recovery |
+| `10-python-oop.mdc` | Python OOP, type hints, docstrings RST |
+| `20-tests-coverage.mdc` | Tests pytest, couverture ≥ 95 %, miroir |
+| `30-documentation-rst.mdc` | Sphinx, RST, Diátaxis |
+| `40-git-workflow.mdc` | Modèle Git 3 niveaux, commits BL-XXX |
+| `50-no-ai-attribution.mdc` | Interdiction attribution IA (appliquée toujours) |
+
+Rappels prioritaires (le détail complet est dans `AGENTS.md`) :
+
+- **Python ≥ 3.13, orienté objet.** 1 classe = 1 fichier (module nommé d'après la classe).
+- **PEP 8** + **PEP 20** ; en cas de conflit, **PEP 8 prime**.
+- **Type hints obligatoires** ; `black` (format) + `ruff` (lint) ; `mypy` strict.
+- **Docstrings en reStructuredText**, avec `:spec: <ID>`.
+- **Tests `pytest` en arborescence miroir** (`tests/unit/<pkg>/`) ; 1 classe testée = 1 classe
+  de test ; classe abstraite testée via une classe concrète de test ; **couverture ≥ 95 %**.
+- Doc **Sphinx/RST** ; dossier `docs/guides/` obligatoire.
+- Gestion des dépendances via **`uv`** ; lockfile **`uv.lock`** versionné.
+- Aucun secret en clair (`.env` gitignoré + `.env.example`).
+- **Modèle Git 3 niveaux** : `main` → `version/vX.Y.Z` → `bl/XXX-description`.
+  Une seule branche `bl/` active à la fois.
+- **Messages de commit** : `BL-XXX: action courte`. Jamais de mention d'outil.
+  Le hook `no-ai-attribution` rejette tout commit avec attribution interdite.
+- **Verrou** `docs/ai_workflow/state/lock.yaml` : ne pas modifier le projet si le
+  verrou est actif et non expiré.
+- **Aucun outil ne doit apparaître comme contributeur, auteur, co-auteur ou mainteneur**
+  dans le moindre fichier versionné.

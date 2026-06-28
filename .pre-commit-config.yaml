@@ -1,0 +1,66 @@
+# Garde-fous mécaniques appliqués avant chaque commit et chaque push.
+# Installation : make install  (ou : uv run pre-commit install --hook-type commit-msg && uv run pre-commit install)
+default_language_version:
+  python: python3.13
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-toml
+      - id: check-added-large-files
+      - id: detect-private-key
+
+  - repo: https://github.com/psf/black
+    rev: 25.1.0
+    hooks:
+      - id: black
+        language_version: python3.13
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.9.10
+    hooks:
+      - id: ruff
+        args: [--fix]
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.13.0
+    hooks:
+      - id: mypy
+        additional_dependencies: ["pydantic-settings"]
+        args: [--strict]
+
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.8.3
+    hooks:
+      - id: bandit
+        args: ["-c", "pyproject.toml"]
+        additional_dependencies: ["bandit[toml]"]
+
+  - repo: local
+    hooks:
+      - id: no-ai-attribution
+        name: Interdiction attribution IA (commit-msg)
+        entry: python scripts/check_no_ai_attribution.py
+        language: system
+        stages: [commit-msg]
+        pass_filenames: true
+
+      - id: pytest-cov-95
+        name: pytest (couverture >= 95%)
+        entry: uv run pytest --cov=src --cov-report=term-missing --cov-fail-under=95
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [pre-push]
+
+      - id: check-traceability
+        name: Traçabilité (specs → backlog → runs)
+        entry: uv run python scripts/check_traceability.py
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [pre-push]

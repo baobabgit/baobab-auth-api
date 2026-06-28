@@ -1,0 +1,12 @@
+# Graphe de dépendances entre backlogs
+# Mis à jour par le Découpeur backlog.
+# Utilisé par l'Orchestrateur pour la sélection du prochain backlog.
+
+backlogs: []
+# Exemple :
+# - id: BL-002
+#   depends_on:
+#     - BL-001
+#   blocks:
+#     - BL-003
+#     - BL-004
