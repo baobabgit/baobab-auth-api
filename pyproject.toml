@@ -34,7 +34,7 @@ packages = ["src/example_package"]
 [dependency-groups]
 dev = [
     "black>=24.0",
-    "ruff>=0.9",
+    "ruff>=0.15.20",
     "mypy>=1.13",
     "pytest>=9.1.1",
     "bandit[toml]>=1.9.4",
