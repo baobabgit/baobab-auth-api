@@ -26,7 +26,7 @@ jobs:
             exit 1
           fi
           echo "Tag valide : $GITHUB_REF_NAME"
-      - uses: astral-sh/setup-uv@v8.0.0
+      - uses: astral-sh/setup-uv@v8.2.0
       - run: uv python install 3.13
       - run: uv sync --frozen
       - name: Vérifier la cohérence version tag ↔ pyproject.toml
@@ -59,7 +59,7 @@ jobs:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
-      - uses: astral-sh/setup-uv@v8.0.0
+      - uses: astral-sh/setup-uv@v8.2.0
       - run: uv python install 3.13
       - run: uv sync --frozen
       - name: Build sdist + wheel
