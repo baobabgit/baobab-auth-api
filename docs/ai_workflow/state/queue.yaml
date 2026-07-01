@@ -1,20 +1,60 @@
 # File de backlogs — gérée par l'Orchestrateur
-# L'orchestrateur sélectionne le prochain backlog selon :
-#   1. version active
-#   2. dépendances satisfaites
-#   3. priorité la plus élevée (P0 > P1 > P2 > P3 > P4)
-#   4. impact bloquant
-#   5. risque à réduire
-#   6. effort raisonnable
-#   7. absence de blocage d'intégration
 
-version_active: null
+version_active: v0.1.0
 
-queue: []
-# Exemple d'entrée :
-# - id: BL-001
-#   title: "Initialiser la structure du package"
-#   version_target: v0.1.0
-#   priority: P0
-#   status: TODO
-#   depends_on: []
+queue:
+  - id: BL-API-010-001
+    title: "Initialiser le package baobab-auth-api"
+    version_target: v0.1.0
+    priority: P0
+    status: IN_PROGRESS
+    depends_on: []
+
+  - id: BL-API-010-002
+    title: "Configurer FastAPI"
+    version_target: v0.1.0
+    priority: P0
+    status: READY
+    depends_on: [BL-API-010-001]
+
+  - id: BL-API-010-003
+    title: "Implémenter les schémas HTTP"
+    version_target: v0.1.0
+    priority: P0
+    status: READY
+    depends_on: [BL-API-010-002]
+
+  - id: BL-API-010-004
+    title: "Implémenter register/login"
+    version_target: v0.1.0
+    priority: P0
+    status: READY
+    depends_on: [BL-API-010-003]
+
+  - id: BL-API-010-005
+    title: "Implémenter refresh/logout/me"
+    version_target: v0.1.0
+    priority: P0
+    status: READY
+    depends_on: [BL-API-010-004]
+
+  - id: BL-API-010-006
+    title: "Exposer JWKS/rôles/permissions"
+    version_target: v0.1.0
+    priority: P1
+    status: READY
+    depends_on: [BL-API-010-005]
+
+  - id: BL-API-010-007
+    title: "Health/readiness"
+    version_target: v0.1.0
+    priority: P1
+    status: READY
+    depends_on: [BL-API-010-006]
+
+  - id: BL-API-010-008
+    title: "Tests et documentation"
+    version_target: v0.1.0
+    priority: P0
+    status: READY
+    depends_on: [BL-API-010-007]
