@@ -1,5 +1,5 @@
 version: v0.1.0
-status: IN_DEVELOPMENT
+status: INTEGRATION_VALIDATED
 created_at: 2026-07-01
 released_at: null
 # Statuts : PLANNED → IN_DEVELOPMENT → INTERNAL_VALIDATED
