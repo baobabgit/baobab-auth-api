@@ -3,33 +3,41 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "example-package"
+name = "baobab-auth-api"
 version = "0.1.0"
-description = "Template de projet Python piloté par plusieurs IA de développement."
+description = "API FastAPI d'authentification Baobab Auth."
 readme = "README.md"
 requires-python = ">=3.13"
 license = "MIT"
 authors = [{ name = "Patrick ANDRIANAIVO" }]
-keywords = ["template", "python", "ai", "agents"]
+keywords = ["auth", "fastapi", "baobab", "jwt"]
 classifiers = [
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.13",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Typing :: Typed",
+    "Framework :: FastAPI",
 ]
 dependencies = [
+    "baobab-auth-core>=0.5.1,<0.6.0",
+    "baobab-auth-database>=0.1.1,<0.2.0",
+    "baobab-auth-security>=0.1.1,<0.2.0",
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.32",
     "pydantic-settings>=2.14.2",
+    "pydantic[email]>=2.10",
+    "httpx>=0.28",
 ]
 
 [project.urls]
-Homepage = "https://github.com/your-org/your-repo"
-Repository = "https://github.com/your-org/your-repo"
-Documentation = "https://your-repo.readthedocs.io"
-Issues = "https://github.com/your-org/your-repo/issues"
+Homepage = "https://github.com/baobabgit/baobab-auth-api"
+Repository = "https://github.com/baobabgit/baobab-auth-api"
+Documentation = "https://github.com/baobabgit/baobab-auth-api#readme"
+Issues = "https://github.com/baobabgit/baobab-auth-api/issues"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/example_package"]
+packages = ["src/baobab_auth_api"]
 
 [dependency-groups]
 dev = [
@@ -37,26 +45,24 @@ dev = [
     "ruff>=0.15.20",
     "mypy>=2.1.0",
     "pytest>=9.1.1",
+    "pytest-asyncio>=0.25",
     "bandit[toml]>=1.9.4",
     "pytest-cov>=7.1.0",
     "nox>=2024.0",
     "build>=1.0",
     "twine>=6.2.0",
     "pre-commit>=4.6.0",
-    "pydantic-settings>=2.14.2",
     "pyyaml>=6.0",
 ]
 docs = [
-    "sphinx>=9.1.0",    
+    "sphinx>=9.1.0",
     "furo>=2025.12.19",
 ]
 
-# --- Black : formatage -------------------------------------------------------
 [tool.black]
 line-length = 88
 target-version = ["py313"]
 
-# --- Ruff : lint uniquement (black gère le format) ---------------------------
 [tool.ruff]
 line-length = 88
 target-version = "py313"
@@ -64,19 +70,19 @@ src = ["src", "tests"]
 
 [tool.ruff.lint]
 select = [
-    "E", "W",   # pycodestyle (PEP 8)
-    "F",        # pyflakes
-    "I",        # isort
-    "N",        # pep8-naming
-    "UP",       # pyupgrade
-    "B",        # bugbear
-    "D",        # pydocstyle (docstrings)
-    "ANN",      # type annotations
-    "RUF",      # ruff
+    "E", "W",
+    "F",
+    "I",
+    "N",
+    "UP",
+    "B",
+    "D",
+    "ANN",
+    "RUF",
 ]
 ignore = [
-    "D203", "D213",      # incompatibilités de style de docstring
-    "D401",              # "imperative mood" : heuristique anglaise, inadaptée au français
+    "D203", "D213",
+    "D401",
 ]
 
 [tool.ruff.lint.pydocstyle]
@@ -86,7 +92,6 @@ convention = "pep257"
 "tests/**/*.py" = ["D", "ANN", "N802"]
 "scripts/**/*.py" = ["ANN401"]
 
-# --- Mypy : typage strict ----------------------------------------------------
 [tool.mypy]
 python_version = "3.13"
 strict = true
@@ -94,9 +99,17 @@ files = ["src", "tests"]
 warn_unused_configs = true
 show_error_codes = true
 
-# --- Pytest + couverture (≥ 95 % imposée) ------------------------------------
+[[tool.mypy.overrides]]
+module = [
+    "baobab_auth_core.*",
+    "baobab_auth_database.*",
+    "baobab_auth_security.*",
+]
+ignore_missing_imports = true
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+asyncio_mode = "auto"
 addopts = "--cov=src --cov-report=term-missing --cov-report=xml --cov-fail-under=95"
 python_classes = ["Test*"]
 python_functions = ["test_*"]
@@ -115,6 +128,5 @@ exclude_lines = [
     "@(abc\\.)?abstractmethod",
 ]
 
-# --- Bandit : analyse de sécurité statique (SAST) ----------------------------
 [tool.bandit]
 exclude_dirs = ["tests", ".venv"]
