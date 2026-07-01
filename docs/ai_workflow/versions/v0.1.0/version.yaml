@@ -1,0 +1,7 @@
+version: v0.1.0
+status: IN_DEVELOPMENT
+created_at: 2026-07-01
+released_at: null
+# Statuts : PLANNED → IN_DEVELOPMENT → INTERNAL_VALIDATED
+#           → INTEGRATION_PENDING → INTEGRATION_VALIDATED
+#           → RELEASE_READY → RELEASED
