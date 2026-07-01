@@ -26,7 +26,7 @@ jobs:
             exit 1
           fi
           echo "Tag valide : $GITHUB_REF_NAME"
-      - uses: astral-sh/setup-uv@v8.0.0
+      - uses: astral-sh/setup-uv@v8.2.0
       - run: uv python install 3.13
       - run: uv sync --frozen
       - name: Vérifier la cohérence version tag ↔ pyproject.toml
@@ -59,7 +59,7 @@ jobs:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
-      - uses: astral-sh/setup-uv@v8.0.0
+      - uses: astral-sh/setup-uv@v8.2.0
       - run: uv python install 3.13
       - run: uv sync --frozen
       - name: Build sdist + wheel
@@ -67,10 +67,10 @@ jobs:
       - name: Twine check
         run: uv run twine check dist/*
       - name: Attestation de provenance (supply chain)
-        uses: actions/attest-build-provenance@v2
+        uses: actions/attest-build-provenance@v4
         with:
           subject-path: "dist/*"
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         with:
           name: dist
           path: dist/

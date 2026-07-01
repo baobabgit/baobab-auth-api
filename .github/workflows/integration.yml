@@ -46,7 +46,7 @@ jobs:
     if: needs.check-required.outputs.required == 'true'
     steps:
       - uses: actions/checkout@v7
-      - uses: astral-sh/setup-uv@v8.0.0
+      - uses: astral-sh/setup-uv@v8.2.0
       - run: uv python install 3.13
       - run: uv sync --frozen
       - name: Tests de contrat
